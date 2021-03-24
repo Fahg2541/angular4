@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -164,9 +164,12 @@ const appRoutes: Routes = [
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     FormsModule,
-    NgxDatePickerModule
+    NgxDatePickerModule,
+    HttpClientModule
   ],
-  schemas: [NO_ERRORS_SCHEMA],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA],
   entryComponents: [AddOrderComponent],
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },],
   bootstrap: [

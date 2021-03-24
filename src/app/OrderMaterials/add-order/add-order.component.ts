@@ -1,11 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormArray, FormBuilder, ValidatorFn, AbstractControl } from '@angular/forms';
-import { NgbCalendar, NgbDate, NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import * as html2pdf from 'html2pdf.js';
-import { IDropdownSettings  } from 'ng-multiselect-dropdown';
-import { es, de } from 'date-fns/locale';
-import { DateFnsConfigurationService } from 'ngx-date-fns';
-import { DatePickerOptions } from '@ngx-tiny/date-picker';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-add-order',
@@ -14,119 +10,64 @@ import { DatePickerOptions } from '@ngx-tiny/date-picker';
 })
 export class AddOrderComponent {
 
-  @ViewChild('pdfTable') pdfTable: ElementRef;
+  dataArr: any;
   form: FormGroup;
-  model: NgbDateStruct;
-  range: FormGroup;
-  hoveredDate: NgbDate | null = null;
-  fromDate: NgbDate | null;
-  toDate: NgbDate | null;
-  
-  dropdownList = [];
-  selectedItems = [];
-  dropdownSettings = {};
-  dropdownSettingss:IDropdownSettings;
-
-  myFormStart: FormGroup;
-  myFormEnd: FormGroup;
-
-  singleDatePickerOptions1: DatePickerOptions = {
-    selectRange: false,
-  };
-
-  singleDatePickerOptions2: DatePickerOptions = {
-    selectRange: false,
-  };
+  id: any;
+  // OrderMaterials = new OrderMaterials();
+  date: any;
+  from: Date
+  to: Date
 
   constructor(private fb: FormBuilder,
-    private calendar: NgbCalendar,
-    public formatter: NgbDateParserFormatter,
-    public config: DateFnsConfigurationService,
-    private _formBuilder: FormBuilder) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-    this.form = this.fb.group({
-      credentials: this.fb.array([]),
-    });
-    this.range = new FormGroup({
-      start: new FormControl(),
-      end: new FormControl()
-    });
+    private http: HttpClient,
+    // private OrderM: OrderMaterialsService,
+    private route: ActivatedRoute) {
+      this.form = this.fb.group({
+        credentials: this.fb.array([]),
+      });
   }
 
   ngOnInit() {
-    this.dropdownList = [
-      { item_id: 1, item_text: 'Mumbai' },
-      { item_id: 2, item_text: 'Bangaluru' },
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-      { item_id: 5, item_text: 'New Delhi' }
-    ];
-    this.selectedItems = [
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' }
-    ];
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
-  }
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
+    this.createForm();
+    // this.orderMaterial();
   }
 
-  Date(){
-    this.myFormStart = this._formBuilder.group({
-      singleDate: [new Date('01/01/2020')]
-    });
-    this.myFormEnd = this._formBuilder.group({
-      singleDate: [new Date('01/01/2020')]
-    });
+  createForm()
+  {
+    this.form = this.fb.group({
+      supplier_name: ['', [Validators.required]],
+      start_date: [''],
+      end_date: [''],
+      material_name: ['', [Validators.required]],
+      detail: [''],
+      quantity: ['', [Validators.required,Validators.minLength(0),]],
+      price: ['', [Validators.required,Validators.minLength(0),]],
+      status_order: ['', [Validators.required]],
+      sum_quantity: ['', [Validators.minLength(0),]],
+      sum_price: ['', [Validators.minLength(0),]],
+      order_name: ['', [Validators.required]]
+    })
   }
 
-  onSubmitSingle() {
-    alert(this.myFormStart.get('singleDate1').value);
-  }
-
-  onSubmitSingle1() {
-    alert(this.myFormEnd.get('singleDate2').value);
-  }
-
-
-  downlondPDF() {
-    const options = {
-      filename: "OrderMaterials.pdf",
-      html2canvas: {},
-      jsPDF: { orientation: 'landscape' }
-    };
-
-    const content: Element = document.getElementById('element-to-export');
-
-    html2pdf()
-      .from(content)
-      .set(options)
-      .save();
-  }
+  // orderMaterial()
+  // {
+  //   this.OrderM.getData1(this.dataArr).subscribe((res: any) =>{
+  //     this.dataArr = res.data;
+  //   })
+  // }
 
   addCreds() {
     const creds = this.form.controls.credentials as FormArray;
     creds.push(this.fb.group({
-      Material: ['', {
+      material_name: ['', {
         validators: [this.isNameDuplicate()],
         updateOn: 'blur'
       }],
-      Detail: '',
-      Quantity: '',
-      Price: '',
-      PriceSum: ''
+      detail: '',
+      quantity: '',
+      price: '',
+      sum_quantity: '',
+      sum_price: ''
     }));
   }
 
@@ -143,15 +84,30 @@ export class AddOrderComponent {
         console.log(hasDuplicate);
         return { duplicate: true };
       }
-
       return null;
     }
   }
 
-  changeToGerman() {
-    this.config.setLocale(de);
+
+  // downlondPDF() {
+  //   const options = {
+  //     filename: "OrderMaterials.pdf",
+  //     html2canvas: {},
+  //     jsPDF: { orientation: 'landscape' }
+  //   };
+
+  //   const content: Element = document.getElementById('element-to-export');
+
+  //   html2pdf()
+  //     .from(content)
+  //     .set(options)
+  //     .save();
+  // }
+
+  updateFromDate(source) {
+    this.from = source.target.valueAsDate;
   }
-  changeToSpanish() {
-    this.config.setLocale(es);
+  updateToDate(source) {
+    this.to = source.target.valueAsDate;
   }
 }
