@@ -33,6 +33,7 @@
     "jspdf-autotable": "^3.5.14",
     "ng-multiselect-dropdown": "^0.2.14",
     "ngx-date-fns": "^8.0.0",
+    "node-modules": "^1.0.1",
     "pdfmake": "^0.1.70",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
