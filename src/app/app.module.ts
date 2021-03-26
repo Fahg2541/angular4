@@ -176,7 +176,6 @@ const appRoutes: Routes = [
     AppComponent,
     HeaderComponent,
     ToggleComponent,
-    SidebarComponent,
-    AddOrderComponent]
+    SidebarComponent]
 })
 export class AppModule { }

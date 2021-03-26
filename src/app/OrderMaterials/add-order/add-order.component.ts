@@ -16,7 +16,7 @@ export class AddOrderComponent {
   // OrderMaterials = new OrderMaterials();
   date: any;
   from: Date
-  to: Date
+  to: Date;
 
   constructor(private fb: FormBuilder,
     private http: HttpClient,
@@ -57,7 +57,7 @@ export class AddOrderComponent {
   // }
 
   addCreds() {
-    const creds = this.form.controls.credentials as FormArray;
+    const creds = [];
     creds.push(this.fb.group({
       material_name: ['', {
         validators: [this.isNameDuplicate()],
