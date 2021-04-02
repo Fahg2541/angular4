@@ -1,14 +1,4 @@
-<div class="main-container" style="height: 92vh;" id="element-to-export">
-    <div class="row">
-        <div class="col-sm-11"></div>
-        <!-- พิมพ์ใบสั่งซื้อ -->
-        <!-- <div class="col-sm-1">
-            <div class="example-button-row">
-                <button class="btn btn-success" (click)="downlondPDF()">พิมพ์</button>
-            </div>
-        </div> -->
-    </div>
-
+<div class="main-container" style="height: 155vh;" id="element-to-export">
     <div class="card" style="margin-top: 30px; margin-right: 10px; margin-left: 10px;">
         <!-- หัวเรื่อง -->
         <div class="card-header">
@@ -86,21 +76,6 @@
                         <input type="date" [value]="to | date:'yyyy-MM-dd'" (input)="updateToDate($event)" class="form-control" placeholder="วันที่ได้รับวัตถุดิบ" />
                     </div>
                 </div>
-
-                <!-- ใบสั่งซื้อ -->
-                <!-- <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>ใบสั่งซื้อ</label><br />
-                        <input type="text" class="form-control" formcontrolName="order_name" placeholder="EX: PO-1903">
-                    </div>
-                </div> -->
-
-                <!-- <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>สถานะสั่งซื้อ</label><br />
-                        <input type="text" class="form-control" formcontrolName="status_order" placeholder="EX: กำลังดำเนินการ หรือ รับวัตถุดิบแล้ว">
-                    </div>
-                </div> -->
             </div>
         </div>
         <!-- หัวเรื่องรายการวัตถุดิบ -->
@@ -115,11 +90,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label>ชื่อวัตถุดิบ</label><br />
-                        <select class="form-control">
-                            <option>
-                                ....
-                            </option>
-                        </select>
+                        <input type="text" class="form-control" formcontrolName="material_name">
                     </div>
                 </div>
 
@@ -151,7 +122,7 @@
                 <div class="col-sm-1">
                     <div class="form-group">
                         <label>ส่วนลด</label>
-                        <input type="text" class="form-control" formcontrolName="price">
+                        <input type="text" class="form-control" formcontrolName="discount">
                     </div>
                 </div>
 

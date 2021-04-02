@@ -56,39 +56,6 @@ export class AddOrderComponent {
   //   })
   // }
 
-  addCreds() {
-    const creds = [];
-    creds.push(this.fb.group({
-      material_name: ['', {
-        validators: [this.isNameDuplicate()],
-        updateOn: 'blur'
-      }],
-      detail: '',
-      quantity: '',
-      price: '',
-      sum_quantity: '',
-      sum_price: ''
-    }));
-  }
-
-  isNameDuplicate(): ValidatorFn {
-    return (c: AbstractControl): { [key: string]: boolean } | null => {
-      const Material = this.form.get("credentials").value;
-      console.log(Material);
-      const names = Material.map(item => item.Material.trim());
-      const hasDuplicate = names.some(
-        (name, index) => names.indexOf(name, index + 1) != -1
-      );
-
-      if (hasDuplicate) {
-        console.log(hasDuplicate);
-        return { duplicate: true };
-      }
-      return null;
-    }
-  }
-
-
   // downlondPDF() {
   //   const options = {
   //     filename: "OrderMaterials.pdf",
